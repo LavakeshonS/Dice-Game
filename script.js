@@ -26,10 +26,28 @@ score0Element.textContent = 0;
 score1Element.textContent = 0;
 diceElement.classList.add('hidden'); //? CSS class selection do not require a .(period)
 
-const playerTotalScores = [0, 0];
-let currentScore = 0;
-let playerActive = 0;
-let playing = true;
+let playerTotalScores, currentScore, playerActive, playing;
+
+const init = function () {
+  playerTotalScores = [0, 0];
+  currentScore = 0;
+  playerActive = 0;
+  playing = true;
+
+  //TODO set all scores to 0
+  for (let i = 0; i < playerTotalScores.length; i++) {
+    playerTotalScores[i] = 0;
+    document.getElementById(`score--${i}`).textContent =
+      playerTotalScores[playerActive];
+    document.getElementById(`current--${i}`).textContent = currentScore;
+    document.querySelector(`.player--${i}`).classList.remove('player--winner');
+  }
+  //TODO set player 0 as active player
+  player0.classList.add('player--active');
+  player1.classList.remove('player--active');
+  diceElement.classList.add('hidden');
+};
+init();
 
 //* Rolling functionality
 btnRoll.addEventListener('click', function () {
@@ -63,7 +81,7 @@ btnHold.addEventListener('click', function () {
     // Pass saved score from array to page element
     document.getElementById(`score--${playerActive}`).textContent =
       playerTotalScores[playerActive];
-    if (playerTotalScores[playerActive] >= 20) {
+    if (playerTotalScores[playerActive] >= 100) {
       //TODO check the TOTAL score is above / equal to 100 game should end
       playing = false;
       //?console.log(`Player ${playerActive} wins`);
@@ -83,18 +101,4 @@ btnHold.addEventListener('click', function () {
 });
 
 //* btn NewGame event handler
-btnNew.addEventListener('click', function () {
-  playing = true;
-  //TODO set all scores to 0
-  for (let i = 0; i < playerTotalScores.length; i++) {
-    playerTotalScores[i] = 0;
-    document.getElementById(`score--${i}`).textContent =
-      playerTotalScores[playerActive];
-    currentScore = 0;
-    document.getElementById(`current--${i}`).textContent = currentScore;
-    document.querySelector(`.player--${i}`).classList.remove('player--winner');
-  }
-  //TODO set player 0 as active player
-  player0.classList.add('player--active');
-  //diceElement.classList.add('hidden');
-});
+btnNew.addEventListener('click', init);
