@@ -12,6 +12,15 @@ const currentScore1El = document.getElementById('current--1');
 const player0 = document.querySelector('.player--0');
 const player1 = document.querySelector('.player--1');
 
+//* Creating function
+const switchPlayer = function () {
+  document.getElementById(`current--${playerActive}`).textContent = 0;
+  playerActive = playerActive === 0 ? 1 : 0;
+  currentScore = 0;
+  player0.classList.toggle('player--active');
+  player1.classList.toggle('player--active');
+};
+
 //* Edit text content of the selected elements or starting conditions
 score0Element.textContent = 0;
 score1Element.textContent = 0;
@@ -37,19 +46,25 @@ btnRoll.addEventListener('click', function () {
       currentScore;
   } else {
     //TODO change player
-    document.getElementById(`current--${playerActive}`).textContent = 0;
-    playerActive = playerActive === 0 ? 1 : 0;
-    currentScore = 0;
-    player0.classList.toggle('player--active');
-    player1.classList.toggle('player--active');
+    switchPlayer();
   }
 });
 
 //* btn HOlD event handler
 btnHold.addEventListener('click', function () {
   //TODO add the current score to TOTAL score
+  //set player score into array
   playerTotalScores[playerActive] += currentScore;
   console.log(playerTotalScores[playerActive]);
-  //TODO check the TOTAL score is above / equal to 100
-  //TODO if not switch player
+  // Pass saved score from array to page element
+  playerTotalScores[playerActive] = document.getElementById(
+    `current--${playerActive}`
+  ).textContent;
+  if (playerTotalScores >= 100) {
+    //TODO check the TOTAL score is above / equal to 100
+    console.log(`Player ${playerActive} wins`);
+  } else {
+    //TODO if not switch player
+    switchPlayer();
+  }
 });
